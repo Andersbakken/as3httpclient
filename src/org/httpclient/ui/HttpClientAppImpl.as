@@ -18,9 +18,6 @@ package org.httpclient.ui {
   public class HttpClientAppImpl extends Application {
     
     [Bindable]
-    public var verbs:ArrayCollection = new ArrayCollection([ { label:"GET" }, { label:"HEAD" }, { label:"DELETE" }, { label:"PUT" }, { label:"POST" } ]);
-    
-    [Bindable]
     public var requestSent:String = "";
     
     [Bindable]
@@ -37,10 +34,7 @@ package org.httpclient.ui {
     
     // Components
     public var uriInput:TextInput;
-    public var requestHeaderArea:TextArea;
-    public var requestBodyArea:TextArea;    
     public var tabNavigator:TabNavigator;
-    public var verbCombo:ComboBox;
 
     public function onCreationComplete(event:Event):void {      
       //Security.loadPolicyFile("xmlsocket://domain.com:5001");
@@ -48,8 +42,6 @@ package org.httpclient.ui {
 
     public function onRequest(event:Event):void {
       
-      var verb:String = verbCombo.selectedItem.label;
-  
       requestSent = "";
       responseBody = "";
       responseStatus = "";
@@ -91,45 +83,7 @@ package org.httpclient.ui {
       client.timeout = 5000;
       client.listener = new HttpListener(listeners);
       
-      var request:HttpRequest = null;  
-      if (verb == "GET") request = new Get();        
-      else if (verb == "HEAD") request = new Head();
-      else if (verb == "DELETE") request = new Delete();
-      else if (verb == "PUT") request = new Put();
-      else if (verb == "POST") request = new Post();
-      else throw new ArgumentError("Invalid verb: " + verb);
-        
-      addCustomHeaders(request);
-      if (verb == "PUT" || verb == "POST") addBody(request);
-      
-      client.request(new URI(uriInput.text), request);
-    }
-    
-    /**
-     * Add custom headers.
-     */
-    public function addCustomHeaders(request:HttpRequest):void {
-      var headerToAdd:Array = [];
-      var headerLines:Array = requestHeaderArea.text.split(/\r+/);
-      for each(var headerLine:String in headerLines) {
-        var index:int = headerLine.indexOf(":");
-        if (index != -1) {
-          var key:String = StringUtil.trim(headerLine.substring(0, index));
-          var value:String = StringUtil.trim(headerLine.substr(index + 1));
-          request.addHeader(key, value);
-        }
-      }      
-    }
-
-    /**
-     * Add body.
-     */    
-    public function addBody(request:HttpRequest):void {
-      var data:ByteArray = new ByteArray();
-      data.writeUTFBytes(requestBodyArea.text);
-      data.position = 0;  
-          
-      request.body = data;
+      client.request(new URI(uriInput.text), new Get());
     }
     
   }
