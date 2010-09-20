@@ -18,34 +18,42 @@ package org.httpclient.ui {
   public class HttpClientAppImpl extends Application {
     
     [Bindable]
-    public var requestSent:String = "";
-    
-    [Bindable]
     public var status:String = "";
   
     [Bindable]
     public var responseStatus:String;
     
     [Bindable]
-    public var responseHeader:String;
-    
-    [Bindable]
     public var responseBody:String;    
     
     // Components
-    public var uriInput:TextInput;
-    public var tabNavigator:TabNavigator;
+    public var serverInput:TextInput;
+    public var customInput:TextInput;
 
     public function onCreationComplete(event:Event):void {      
       //Security.loadPolicyFile("xmlsocket://domain.com:5001");
     }
 
-    public function onRequest(event:Event):void {
+    public function onCustomRequest(event:Event):void {
+        sendHttp(customInput.text);
+    }
+
+    public function onSubtitles(event:Event):void {
+        sendHttp("/subtitles");
+    }
+
+    public function onPlay(event:Event):void {
+        sendHttp("/play");
+    }
+
+    public function onPause(event:Event):void {
+        sendHttp("/pause");
+    }
+
+    public function sendHttp(path:String):void {
       
-      requestSent = "";
       responseBody = "";
       responseStatus = "";
-      responseHeader = "";    
       
       var listeners:Object = { 
         onConnect: function(e:HttpRequestEvent):void {
@@ -53,13 +61,10 @@ package org.httpclient.ui {
         },
         onRequest: function(e:HttpRequestEvent):void {
           status = "Request sent";
-          requestSent = e.header.replace(/\r\n/g, "\n");
-          if (e.request.body) requestSent += e.request.body;
         },
         onStatus: function(e:HttpStatusEvent):void {
           status = "Got response header";
           responseStatus = e.code + " " + e.response.message;
-          responseHeader = e.header.toString();
         },
         onData: function(e:HttpDataEvent):void {           
           status = "Received " + e.bytes.length + " bytes";
@@ -67,7 +72,6 @@ package org.httpclient.ui {
         },        
         onClose: function():void {
           status = "Closed";
-          tabNavigator.selectedIndex = 1;
         },
         onComplete: function(e:HttpResponseEvent):void {          
           status = "Completed";
@@ -78,12 +82,13 @@ package org.httpclient.ui {
       };
       
       status = "Connecting";
+      status = serverInput.text + path;
       
       var client:HttpClient = new HttpClient();
       client.timeout = 5000;
       client.listener = new HttpListener(listeners);
       
-      client.request(new URI(uriInput.text), new Get());
+      client.request(new URI(serverInput.text + path), new Get());
     }
     
   }
