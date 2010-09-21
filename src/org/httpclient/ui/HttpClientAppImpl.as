@@ -24,7 +24,7 @@ package org.httpclient.ui {
     public var responseStatus:String;
     
     [Bindable]
-    public var responseBody:String;    
+    public var responseBody:String = "";
     
     [Bindable]
     public var currentEvent:String;    
@@ -34,10 +34,16 @@ package org.httpclient.ui {
     public var customInput:TextInput;
     public var eventLabel:TextInput;
 
+    public function log(str:String):void
+    {
+        responseBody = str + "\n" + responseBody;
+    }
+
     public function onCreationComplete(event:Event):void {      
-        var xml:XML = new XML("<subtitle>foobar</subtitle>");
-        trace(xml);
-        currentEvent = xml;
+        //log("foobar");
+        //trace("balle");
+        //Log.output = log;
+        //Log.debug("this is a test");
       //Security.loadPolicyFile("xmlsocket://domain.com:5001");
       //event.backgroundColor = 0xDDDDDD;
     }
@@ -89,8 +95,9 @@ package org.httpclient.ui {
       //status = "Connecting";
       status = serverInput.text + path;
       
-      var client:HttpClient = new HttpClient();
-      client.timeout = 5000;
+      var client:HttpClient = new HttpClient(null, 0); // 0-timeout
+
+      //client.timeout = 5000;
       client.listener = new HttpListener(listeners);
       
       client.request(new URI(serverInput.text + path), new Get());
