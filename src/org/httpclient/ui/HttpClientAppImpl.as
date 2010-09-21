@@ -26,33 +26,38 @@ package org.httpclient.ui {
     [Bindable]
     public var responseBody:String;    
     
+    [Bindable]
+    public var currentEvent:String;    
+
     // Components
     public var serverInput:TextInput;
     public var customInput:TextInput;
+    public var eventLabel:TextInput;
 
     public function onCreationComplete(event:Event):void {      
+        var xml:XML = new XML("<subtitle>foobar</subtitle>");
+        trace(xml);
+        currentEvent = xml;
       //Security.loadPolicyFile("xmlsocket://domain.com:5001");
+      //event.backgroundColor = 0xDDDDDD;
     }
 
-    public function onCustomRequest(event:Event):void {
-        sendHttp(customInput.text);
+    public function setCurrentEvent(str:String):void 
+    {
+        //responseBody += str;
+        //appendToResponseBody(str);
+        var xml:XML = new XML(str);
+        currentEvent = xml;
     }
+    public function appendToResponseBody(str:String):void { responseBody += str; }
+    //public function onCustomRequest(event:Event):void { sendHttp(customInput.text, appendToResponseBody); }
+    public function onCustomRequest(event:Event):void { sendHttp(customInput.text, setCurrentEvent); }
+    public function onEvents(event:Event):void { sendHttp("/events?format=XML", setCurrentEvent); }
+    public function onPlay(event:Event):void { sendHttp("/mediacontrol/play", appendToResponseBody); }
+    public function onPause(event:Event):void { sendHttp("/mediacontrol/pause", appendToResponseBody); }
 
-    public function onSubtitles(event:Event):void {
-        sendHttp("/subtitles");
-    }
-
-    public function onPlay(event:Event):void {
-        sendHttp("/play");
-    }
-
-    public function onPause(event:Event):void {
-        sendHttp("/pause");
-    }
-
-    public function sendHttp(path:String):void {
+    public function sendHttp(path:String, output:Function):void {
       
-      responseBody = "";
       responseStatus = "";
       
       var listeners:Object = { 
@@ -67,8 +72,8 @@ package org.httpclient.ui {
           responseStatus = e.code + " " + e.response.message;
         },
         onData: function(e:HttpDataEvent):void {           
-          status = "Received " + e.bytes.length + " bytes";
-          responseBody += e.readUTFBytes();
+          var str:String = e.readUTFBytes();
+          output(str);
         },        
         onClose: function():void {
           status = "Closed";
@@ -81,7 +86,7 @@ package org.httpclient.ui {
         }
       };
       
-      status = "Connecting";
+      //status = "Connecting";
       status = serverInput.text + path;
       
       var client:HttpClient = new HttpClient();
