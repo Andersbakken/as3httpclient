@@ -64,7 +64,9 @@ package org.httpclient {
      */
     public function HttpSocket(dispatcher:EventDispatcher, timeout:Number = 60000, proxy:URI = null) {
       _dispatcher = dispatcher;
-      _timer = new HttpTimer(timeout, onTimeout);
+      if (timeout > 0) {
+          _timer = new HttpTimer(timeout, onTimeout);
+      }
       _proxy = proxy;
     }
     
@@ -98,7 +100,7 @@ package org.httpclient {
       if (_closed) return;
       _closed = true;
       Log.debug("Called close");
-      _timer.stop();
+      stopTimer();
       // Need to check if connected (otherwise closing on unconnected socket throws error)
       if (_socket && _socket.connected) {
         _socket.close();
@@ -143,7 +145,7 @@ package org.httpclient {
       createSocket(secure);
 
       // Start timer
-      _timer.start();
+      startTimer();
       
       // Connect
       var port:int = (_proxy) ? Number(_proxy.port) : Number(uri.port);
@@ -168,7 +170,7 @@ package org.httpclient {
       var onProxyData:Function = function(bytes:ByteArray):void {};
 
       var onProxyComplete:Function = function(contentLength:Number):void {
-        _timer.stop();
+        stopTimer();
         if (proxyResponse.isSuccess) {
           var socket:TLSSocket = new TLSSocket();
           socket.startTLS(_socket, uri.authority);
@@ -193,7 +195,7 @@ package org.httpclient {
       
       _socket.writeBytes(bytes);
       _socket.flush();
-      _timer.reset();
+      resetTimer();
       Log.debug("Send CONNECT done");
     }
 
@@ -215,7 +217,7 @@ package org.httpclient {
       
       _socket.writeBytes(headerBytes);      
       _socket.flush();
-      _timer.reset();
+      resetTimer();
       
       if (request.hasRequestBody) {
         
@@ -228,7 +230,7 @@ package org.httpclient {
           if (bytes.length > 0) {
             
             _socket.writeBytes(bytes);
-            _timer.reset();
+            resetTimer();
              
             // We are totally fucked.
             // https://bugs.adobe.com/jira/browse/FP-6
@@ -247,7 +249,7 @@ package org.httpclient {
      */
     private function onSocketData(event:ProgressEvent):void {
       while (_socket && _socket.connected && _socket.bytesAvailable) {        
-        _timer.reset();
+        resetTimer();
         try {           
           
           // Load data from socket
@@ -291,7 +293,7 @@ package org.httpclient {
     }
     
     private function onComplete(response:HttpResponse):void {
-      _timer.stop();
+      stopTimer();
       _dispatcher.dispatchEvent(new HttpResponseEvent(response));
     }
     
@@ -334,6 +336,19 @@ package org.httpclient {
       if (_closed) return;
       close();
       _dispatcher.dispatchEvent(event.clone());
+    }
+
+    private function startTimer():void {
+        if (_timer)
+            _timer.start();
+    }
+    private function stopTimer():void {
+        if (_timer)
+            _timer.stop();
+    }
+    private function resetTimer():void {
+        if (_timer)
+            _timer.reset();
     }
     
     
