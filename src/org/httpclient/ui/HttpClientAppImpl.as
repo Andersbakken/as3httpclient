@@ -24,9 +24,6 @@ package org.httpclient.ui {
     public var responseStatus:String;
 
     [Bindable]
-    public var responseBody:String = "";
-
-    [Bindable]
     public var currentEvent:String;
 
     [Bindable]
@@ -43,19 +40,12 @@ package org.httpclient.ui {
     public var customInput:TextInput;
     public var eventLabel:Label;
 
-    public function log(str:String):void
-    {
-        responseBody = str + "\n" + responseBody;
-    }
-
     public function onCreationComplete(event:Event):void {
         reconnect();
     }
 
     public function setCurrentEvent(str:String):void
     {
-        //responseBody += str;
-        //appendToResponseBody(str);
         var xml:XML = new XML(str);
 
         currentEventID = xml.attribute("id");
@@ -74,16 +64,14 @@ package org.httpclient.ui {
 
         deviceInfo = data;
     }
-    public function appendToResponseBody(str:String):void { responseBody += str; }
-    //public function onCustomRequest(event:Event):void { sendHttp(customInput.text, appendToResponseBody); }
     public function onCustomRequest(event:Event):void { sendHttp(customInput.text, setCurrentEvent); }
     public function onEvents(event:Event):void { sendHttp("/events?format=XML", setCurrentEvent); }
-    public function onPlay(event:Event):void { sendHttp("/mediacontrol/play", appendToResponseBody); }
-    public function onPause(event:Event):void { sendHttp("/mediacontrol/pause", appendToResponseBody); }
+    public function onPlay(event:Event):void { sendHttp("/mediacontrol/play", null); }
+    public function onPause(event:Event):void { sendHttp("/mediacontrol/pause", null); }
     public function onDeviceInfo(event:Event):void { sendHttp("/device?format=xml", setDeviceInfo); }
     public function reconnect():void { sendHttp("/events?format=xml", setCurrentEvent); }
 
-    public function sendHttp(path:String, output:Function):void {
+    public function sendHttp(path:String, output:*):void {
 
       responseStatus = "";
 
@@ -100,7 +88,11 @@ package org.httpclient.ui {
         },
         onData: function(e:HttpDataEvent):void {
           var str:String = e.readUTFBytes();
-          output(str);
+          if (output is Function) {
+              output(str);
+          } else if (output is String) {
+              output = str;
+          }
         },
         onClose: function():void {
           status = "Closed";

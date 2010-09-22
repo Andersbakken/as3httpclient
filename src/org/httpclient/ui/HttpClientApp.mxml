@@ -13,13 +13,7 @@
         <mx:Button label="Pause" click="onPause(event);"/>
         <mx:Button label="Device info" click="onDeviceInfo(event);"/>
 
-        <mx:Button label="Events" click="onEvents(event);" visible="false"/>
-
-        <mx:HBox width="100%" paddingRight="2" paddingBottom="2" visible="false">
-            <mx:TextInput id="customInput" width="100%" text="/events?format=XML" visible="false"/>
-            <mx:Button label="Go" click="onCustomRequest(event);" visible="false"/>
-        </mx:HBox>
-
+        <mx:Button label="Reconnect" click="reconnect();"/>
         <mx:HBox id="holder" width="100%" styleName="frame" backgroundColor="#000000">
             <mx:Label id="eventIDLabel" styleName="frame" width="10%" textAlign="left" htmlText="{currentEventID}" height="100" color="#FFFF00"/> 
             <mx:Label id="eventLabel" styleName="frame" width="90%" textAlign="center" htmlText="{currentEvent}" height="100" color="#FFFF00"/> 
@@ -38,11 +32,6 @@
         <mx:HBox width="100%" height="100%" paddingRight="2" paddingBottom="2">
             <mx:Label text="Device info:" width="100" textAlign="right"/>
             <mx:TextArea editable="false" width="100%" height="100%" text="{deviceInfo}"/>
-        </mx:HBox>          
-
-        <mx:HBox width="100%" height="100%" paddingRight="2" paddingBottom="2" visible="false">
-            <mx:Label text="Body:" width="60" textAlign="right"/>
-            <mx:TextArea editable="false" width="100%" height="100%" text="{responseBody}"/>
         </mx:HBox>          
     </mx:VBox>
 
