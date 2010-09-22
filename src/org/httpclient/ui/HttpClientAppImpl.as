@@ -46,12 +46,7 @@ package org.httpclient.ui {
     }
 
     public function onCreationComplete(event:Event):void {
-        //log("foobar");
-        //trace("balle");
-        //Log.output = log;
-        //Log.debug("this is a test");
-      //Security.loadPolicyFile("xmlsocket://domain.com:5001");
-      //event.backgroundColor = 0xDDDDDD;
+        reconnect();
     }
 
     public function setCurrentEvent(str:String):void
@@ -71,6 +66,7 @@ package org.httpclient.ui {
     public function onEvents(event:Event):void { sendHttp("/events?format=XML", setCurrentEvent); }
     public function onPlay(event:Event):void { sendHttp("/mediacontrol/play", appendToResponseBody); }
     public function onPause(event:Event):void { sendHttp("/mediacontrol/pause", appendToResponseBody); }
+    public function reconnect():void { sendHttp("/events?format=xml", setCurrentEvent); }
 
     public function sendHttp(path:String, output:Function):void {
 

@@ -11,11 +11,11 @@
 
         <mx:Button label="Play" click="onPlay(event);"/>
         <mx:Button label="Pause" click="onPause(event);"/>
-        <mx:Button label="Events" click="onEvents(event);"/>
+        <mx:Button label="Events" click="onEvents(event);" visible="false"/>
 
-        <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
-            <mx:TextInput id="customInput" width="100%" text="/events?format=XML"/>
-            <mx:Button label="Go" click="onCustomRequest(event);"/>
+        <mx:HBox width="100%" paddingRight="2" paddingBottom="2" visible="false">
+            <mx:TextInput id="customInput" width="100%" text="/events?format=XML" visible="false"/>
+            <mx:Button label="Go" click="onCustomRequest(event);" visible="false"/>
         </mx:HBox>
 
         <mx:HBox id="holder" width="100%" styleName="frame" backgroundColor="#000000">
