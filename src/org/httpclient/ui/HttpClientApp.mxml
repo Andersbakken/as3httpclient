@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ui:HttpClientAppImpl xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" xmlns:ui="org.httpclient.ui.*" creationComplete="onCreationComplete(event)">
+<ui:HttpClientAppImpl xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://www.adobe.com/2006/mxml" xmlns:ex="examples.*"
+    xmlns:ui="org.httpclient.ui.*" creationComplete="onCreationComplete(event)">
 
     <mx:VBox width="100%" height="100%">
 
@@ -17,7 +18,9 @@
             <mx:Button label="Go" click="onCustomRequest(event);"/>
         </mx:HBox>
 
-        <mx:TextInput id="eventLabel" width="100%" textAlign="center" htmlText="{currentEvent}" editable="false" height="50"/>
+        <mx:HBox id="holder" width="100%" styleName="frame" backgroundColor="#000000">
+            <mx:Label id="eventLabel" styleName="frame" width="100%" textAlign="center" htmlText="{currentEvent}" height="50" color="#FFFF00"/> 
+        </mx:HBox>
 
         <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
             <mx:Label text="Status:" width="60" textAlign="right"/>
@@ -33,7 +36,6 @@
             <mx:Label text="Body:" width="60" textAlign="right"/>
             <mx:TextArea editable="false" width="100%" height="100%" text="{responseBody}"/>
         </mx:HBox>          
-
     </mx:VBox>
 
 </ui:HttpClientAppImpl>

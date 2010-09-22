@@ -32,7 +32,7 @@ package org.httpclient.ui {
     // Components
     public var serverInput:TextInput;
     public var customInput:TextInput;
-    public var eventLabel:TextInput;
+    public var eventLabel:Label;
 
     public function log(str:String):void
     {
