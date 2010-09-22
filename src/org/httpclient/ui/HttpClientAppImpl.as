@@ -33,7 +33,10 @@ package org.httpclient.ui {
     public var currentEventID:String;
 
     [Bindable]
-    public var latency:String;
+    public var deviceInfo:String;
+
+    //[Bindable]
+    //public var latency:String;
 
     // Components
     public var serverInput:TextInput;
@@ -60,12 +63,24 @@ package org.httpclient.ui {
         //var date:Date = new Date();
         //latency = (date.valueOf() - xml.attribute("time"));
     }
+
+    public function setDeviceInfo(str:String):void
+    {
+        var xml:XML = new XML(str);
+        var a:XMLList = xml.@*;
+        var data:String = "";
+        for (var i:int = 0; i < a.length(); i++) 
+            data += a[i].name() + ": " + xml.attribute(a[i].name()) + "\n";
+
+        deviceInfo = data;
+    }
     public function appendToResponseBody(str:String):void { responseBody += str; }
     //public function onCustomRequest(event:Event):void { sendHttp(customInput.text, appendToResponseBody); }
     public function onCustomRequest(event:Event):void { sendHttp(customInput.text, setCurrentEvent); }
     public function onEvents(event:Event):void { sendHttp("/events?format=XML", setCurrentEvent); }
     public function onPlay(event:Event):void { sendHttp("/mediacontrol/play", appendToResponseBody); }
     public function onPause(event:Event):void { sendHttp("/mediacontrol/pause", appendToResponseBody); }
+    public function onDeviceInfo(event:Event):void { sendHttp("/device?format=xml", setDeviceInfo); }
     public function reconnect():void { sendHttp("/events?format=xml", setCurrentEvent); }
 
     public function sendHttp(path:String, output:Function):void {
