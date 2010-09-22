@@ -19,7 +19,7 @@
         </mx:HBox>
 
         <mx:HBox id="holder" width="100%" styleName="frame" backgroundColor="#000000">
-            <mx:Label id="eventLabel" styleName="frame" width="100%" textAlign="center" htmlText="{currentEvent}" height="50" color="#FFFF00"/> 
+            <mx:Label id="eventLabel" styleName="frame" width="100%" textAlign="center" htmlText="{currentEvent}" height="100" color="#FFFF00"/> 
         </mx:HBox>
 
         <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
@@ -32,7 +32,7 @@
             <mx:Label width="100%" text="{responseStatus}"/>
         </mx:HBox>
 
-        <mx:HBox width="100%" height="100%" paddingRight="2" paddingBottom="2">
+        <mx:HBox width="100%" height="100%" paddingRight="2" paddingBottom="2" visible="false">
             <mx:Label text="Body:" width="60" textAlign="right"/>
             <mx:TextArea editable="false" width="100%" height="100%" text="{responseBody}"/>
         </mx:HBox>          
