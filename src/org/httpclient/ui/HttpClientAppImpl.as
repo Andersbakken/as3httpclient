@@ -29,6 +29,12 @@ package org.httpclient.ui {
     [Bindable]
     public var currentEvent:String;    
 
+    [Bindable]
+    public var currentEventID:Number;    
+
+    [Bindable]
+    public var latency:Number;    
+
     // Components
     public var serverInput:TextInput;
     public var customInput:TextInput;
@@ -53,7 +59,11 @@ package org.httpclient.ui {
         //responseBody += str;
         //appendToResponseBody(str);
         var xml:XML = new XML(str);
+        
+        var date:Date = new Date();
+        currentEventID = xml.attribute("id");
         currentEvent = xml;
+        latency = (date.valueOf() - xml.attribute("time"));
     }
     public function appendToResponseBody(str:String):void { responseBody += str; }
     //public function onCustomRequest(event:Event):void { sendHttp(customInput.text, appendToResponseBody); }
