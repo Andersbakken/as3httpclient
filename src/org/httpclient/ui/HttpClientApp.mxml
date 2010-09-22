@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ui:HttpClientAppImpl xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="http://www.adobe.com/2006/mxml" xmlns:ex="examples.*"
-    xmlns:ui="org.httpclient.ui.*" creationComplete="onCreationComplete(event)">
+    xmlns:ui="org.httpclient.ui.*" creationComplete="onCreationComplete(event)" height="500" width="500">
 
     <mx:VBox width="100%" height="100%">
 
         <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
             <mx:Label text="Server:" width="60" textAlign="right"/>
-            <mx:TextInput id="serverInput" width="100%" text="http://lglinux-abakken:8887"/>
+            <mx:TextInput id="serverInput" width="100%" text="http://192.168.238.132:8887"/>
         </mx:HBox>
 
         <mx:Button label="Play" click="onPlay(event);"/>
@@ -19,7 +19,8 @@
         </mx:HBox>
 
         <mx:HBox id="holder" width="100%" styleName="frame" backgroundColor="#000000">
-            <mx:Label id="eventLabel" styleName="frame" width="100%" textAlign="center" htmlText="{currentEvent}" height="100" color="#FFFF00"/> 
+            <mx:Label id="eventIDLabel" styleName="frame" width="10%" textAlign="left" htmlText="{currentEventID}" height="100" color="#FFFF00"/> 
+            <mx:Label id="eventLabel" styleName="frame" width="90%" textAlign="center" htmlText="{currentEvent}" height="100" color="#FFFF00"/> 
         </mx:HBox>
 
         <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
