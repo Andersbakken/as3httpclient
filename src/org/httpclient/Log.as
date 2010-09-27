@@ -15,12 +15,8 @@ package org.httpclient {
     public static const OFF:Number = 5;
     
     public static var level:Number = INFO;
+    public static var output:Function = function(s:String):void { trace(s); };
       
-    // What to do with logged string  
-    private static function output(s:String):void {
-      trace(s);
-    }
-        
     /**
      * Log at debug level.
      * @param Debug string
