@@ -133,7 +133,11 @@ package org.httpclient.io {
      * @return True if we don't expect any more data, false otherwise
      */
     private function handlePayload(bytes:ByteArray):Boolean {    
-      if (_responseHeader.isChunked) {
+      if (_responseHeader.isEventStream) {
+        _responseBody.write(bytes);
+        _bodyBytesRead += bytes.length;
+        return _responseBody.readEventStream(_onResponseData);
+      } else if (_responseHeader.isChunked) {
         _responseBody.write(bytes);
         _bodyBytesRead += bytes.length;
         return _responseBody.readChunks(_onResponseData);
@@ -184,5 +188,5 @@ package org.httpclient.io {
     }
 
   }
-  
 }
+

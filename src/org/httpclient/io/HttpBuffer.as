@@ -145,6 +145,32 @@ package org.httpclient.io {
       return false;
     }
 
+    /**
+     * Read event source
+     * @param onData For each chunk, call function(bytes:ByteArray)
+     * @return True if done, and no more chunks, false if there is more data to expect.
+     *  
+     * TODO: Footers...
+     */
+    public function readEventStream(onData:Function):Boolean {
+      while(_data.bytesAvailable >= 9) { // minimum amount for data:\r\n\r\n
+        var old:int = _data.position;
+        var buffer:String = _data.readUTF();
+        if (buffer.substring(0, 5) != "data:") {
+            throw new Error("Invalid data, doesn't start with data: '" + buffer.substr(0, 5) + "'");
+        }
+        var delimiter:int = buffer.indexOf("\r\n\r\n");
+        if (delimiter != -1) {
+            var bytes:ByteArray = new ByteArray();
+            bytes.writeUTF(buffer.substring(5, delimiter));
+            onData(bytes);
+            _data.position = delimiter + 2;
+        } else {
+            _data.position = old;
+            break;
+        }
+      }
+      return false;
+    }
   }
-  
 }
