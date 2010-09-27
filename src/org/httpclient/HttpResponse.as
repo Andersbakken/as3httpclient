@@ -52,6 +52,10 @@ package org.httpclient {
     public function get isChunked():Boolean {
       return _header.contains("Transfer-Encoding", "Chunked");
     }
+
+    public function get isEventStream():Boolean {
+      return _header.contains("Content-Type", "text/event-stream");
+    }
     
     /**
      * To string.
@@ -62,3 +66,4 @@ package org.httpclient {
     
   }
 }
+
