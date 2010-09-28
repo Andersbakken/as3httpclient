@@ -262,7 +262,7 @@ package org.httpclient {
           
         } catch(e:EOFError) {
           Log.debug("EOF");
-          _dispatcher.dispatchEvent(new HttpErrorEvent(HttpErrorEvent.ERROR, false, false, "EOF", 1));          
+          _dispatcher.dispatchEvent(new HttpErrorEvent(HttpErrorEvent.ERROR, false, false, "fooooo", 1));          
           break;
         }                           
       }

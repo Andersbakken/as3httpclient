@@ -6,7 +6,8 @@
 
         <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
             <mx:Label text="Server:" width="60" textAlign="right"/>
-            <mx:TextInput id="serverInput" width="100%" text="http://192.168.238.132:8887"/>
+            <!--<mx:TextInput id="serverInput" width="100%" text="http://192.168.238.132:8887"/>-->
+            <mx:TextInput id="serverInput" width="100%" text="http://lglinux-abakken:8887"/>
         </mx:HBox>
 
         <mx:Button label="Play" click="onPlay(event);"/>
@@ -27,6 +28,11 @@
         <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
             <mx:Label text="Response Status:" width="100" textAlign="right"/>
             <mx:Label width="100%" text="{responseStatus}"/>
+        </mx:HBox>
+
+        <mx:HBox width="100%" paddingRight="2" paddingBottom="2">
+            <mx:Label text="Debug:" width="100" textAlign="right"/>
+            <mx:TextArea editable="false" width="100%" height="100%" text="{debug}"/>
         </mx:HBox>
 
         <mx:HBox width="100%" height="100%" paddingRight="2" paddingBottom="2">

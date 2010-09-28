@@ -24,6 +24,9 @@ package org.httpclient.ui {
     public var responseStatus:String;
 
     [Bindable]
+    public var debug:String = "";
+
+    [Bindable]
     public var currentEvent:String;
 
     [Bindable]
@@ -41,6 +44,10 @@ package org.httpclient.ui {
     public var eventLabel:Label;
 
     public function onCreationComplete(event:Event):void {
+        Log.level = Log.DEBUG;
+        Log.output = function(s:String):void { debug = debug + s + "\n"; };
+        //debug = "balle\n";
+        Log.debug("fisk");
         reconnect();
     }
 
@@ -65,7 +72,7 @@ package org.httpclient.ui {
         deviceInfo = data;
     }
     public function onCustomRequest(event:Event):void { sendHttp(customInput.text, setCurrentEvent); }
-    public function onEvents(event:Event):void { sendHttp("/events?format=XML", setCurrentEvent); }
+    public function onEvents(event:Event):void { reconnect(); }
     public function onPlay(event:Event):void { sendHttp("/mediacontrol/play", null); }
     public function onPause(event:Event):void { sendHttp("/mediacontrol/pause", null); }
     public function onDeviceInfo(event:Event):void { sendHttp("/device?format=xml", setDeviceInfo); }
